@@ -1,10 +1,12 @@
 package io.github.luaprogrammer.api.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -13,11 +15,15 @@ import lombok.NoArgsConstructor;
 public class UsuarioModel {
 
     @Id
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
-    private String username;
+    @Column(nullable = false)
+    private String nome;
 
-    private String dataNascimento;
+    @Column(nullable = false)
+    private Date dataNascimento;
 
+    @Column(nullable = false, unique = true)
     private String email;
 }

@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -18,12 +19,14 @@ public class UsuarioService {
     private final ModelMapper mapper;
 
     public List<UsuarioDto> findAll() {
+        if (usuarioRepository.findAll().isEmpty()) throw new RuntimeException("Nenhum usuário encontrado");
         return usuarioRepository.findAll().stream()
                 .map(usuarioModel -> mapper.map(usuarioModel, UsuarioDto.class))
                 .toList();
     }
 
-    public UsuarioDto findById(Long id) {
+    public UsuarioDto findById(UUID id) {
+        if (!usuarioRepository.existsById(id)) throw new RuntimeException("Usuário não encontrado");
         return mapper.map(usuarioRepository.findById(id), UsuarioDto.class);
     }
 
@@ -32,13 +35,13 @@ public class UsuarioService {
         return mapper.map(usuarioSalvo, UsuarioDto.class);
     }
 
-    public UsuarioDto update(UsuarioDto usuarioDto, Long id) {
+    public UsuarioDto update(UsuarioDto usuarioDto, UUID id) {
         usuarioDto.setId(id);
         final var usuarioSalvo = usuarioRepository.save(mapper.map(usuarioDto, UsuarioModel.class));
         return mapper.map(usuarioSalvo, UsuarioDto.class);
     }
 
-    public void delete(Long id) {
+    public void delete(UUID id) {
         usuarioRepository.deleteById(id);
     }
 
