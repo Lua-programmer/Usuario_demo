@@ -1,6 +1,7 @@
 package io.github.luaprogrammer.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class UsuarioDto {
     private Date dataNascimento;
 
     @NotBlank(message = "O campo email é obrigatório")
+    @Email(message = "O campo email deve ser um email válido")
     private String email;
 
 }

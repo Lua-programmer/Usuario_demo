@@ -1,6 +1,7 @@
 package io.github.luaprogrammer.api.service;
 
 import io.github.luaprogrammer.api.dto.UsuarioDto;
+import io.github.luaprogrammer.api.exception.BusinessException;
 import io.github.luaprogrammer.api.model.UsuarioModel;
 import io.github.luaprogrammer.api.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +20,14 @@ public class UsuarioService {
     private final ModelMapper mapper;
 
     public List<UsuarioDto> findAll() {
-        if (usuarioRepository.findAll().isEmpty()) throw new RuntimeException("Nenhum usuário encontrado");
+        if (usuarioRepository.findAll().isEmpty()) throw new BusinessException("Nenhum usuário encontrado");
         return usuarioRepository.findAll().stream()
                 .map(usuarioModel -> mapper.map(usuarioModel, UsuarioDto.class))
                 .toList();
     }
 
     public UsuarioDto findById(UUID id) {
-        if (!usuarioRepository.existsById(id)) throw new RuntimeException("Usuário não encontrado");
+        if (!usuarioRepository.existsById(id)) throw new BusinessException("Usuário não encontrado");
         return mapper.map(usuarioRepository.findById(id), UsuarioDto.class);
     }
 
@@ -36,12 +37,14 @@ public class UsuarioService {
     }
 
     public UsuarioDto update(UsuarioDto usuarioDto, UUID id) {
+        findById(id);
         usuarioDto.setId(id);
         final var usuarioSalvo = usuarioRepository.save(mapper.map(usuarioDto, UsuarioModel.class));
         return mapper.map(usuarioSalvo, UsuarioDto.class);
     }
 
     public void delete(UUID id) {
+        findById(id);
         usuarioRepository.deleteById(id);
     }
 
