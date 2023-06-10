@@ -10,7 +10,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,7 +25,7 @@ public class UsuarioController {
     }
 
     @GetMapping(value = ID, produces="application/json")
-    public ResponseEntity<UsuarioDto> findById(@PathVariable UUID id) {
+    public ResponseEntity<UsuarioDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(usuarioService.findById(id));
     }
 
@@ -38,13 +37,13 @@ public class UsuarioController {
     }
 
     @PutMapping(value = ID, produces="application/json", consumes="application/json")
-    public ResponseEntity<UsuarioDto> update(@PathVariable UUID id, @RequestBody @Valid UsuarioDto usuarioDto) {
+    public ResponseEntity<UsuarioDto> update(@PathVariable Long id, @RequestBody @Valid UsuarioDto usuarioDto) {
         usuarioService.update(usuarioDto, id);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping(value = ID)
-    public ResponseEntity<UsuarioDto> delete(@PathVariable UUID id) {
+    public ResponseEntity<UsuarioDto> delete(@PathVariable Long id) {
         usuarioService.delete(id);
         return ResponseEntity.noContent().build();
     }

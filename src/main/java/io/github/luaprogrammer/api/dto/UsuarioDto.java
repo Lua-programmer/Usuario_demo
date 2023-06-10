@@ -8,14 +8,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UsuarioDto {
 
-    private UUID id;
+    private Long id;
 
     @NotBlank(message = "O campo nome é obrigatório")
     private String nome;

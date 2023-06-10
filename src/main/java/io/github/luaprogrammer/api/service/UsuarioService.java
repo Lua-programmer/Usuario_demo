@@ -9,7 +9,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +25,7 @@ public class UsuarioService {
                 .toList();
     }
 
-    public UsuarioDto findById(UUID id) {
+    public UsuarioDto findById(Long id) {
         if (!usuarioRepository.existsById(id)) throw new BusinessException("Usuário não encontrado");
         return mapper.map(usuarioRepository.findById(id), UsuarioDto.class);
     }
@@ -36,14 +35,14 @@ public class UsuarioService {
         return mapper.map(usuarioSalvo, UsuarioDto.class);
     }
 
-    public UsuarioDto update(UsuarioDto usuarioDto, UUID id) {
+    public UsuarioDto update(UsuarioDto usuarioDto, Long id) {
         findById(id);
         usuarioDto.setId(id);
         final var usuarioSalvo = usuarioRepository.save(mapper.map(usuarioDto, UsuarioModel.class));
         return mapper.map(usuarioSalvo, UsuarioDto.class);
     }
 
-    public void delete(UUID id) {
+    public void delete(Long id) {
         findById(id);
         usuarioRepository.deleteById(id);
     }
